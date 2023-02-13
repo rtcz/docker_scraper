@@ -4,15 +4,15 @@ services:
     container_name: docker_scraper_db
     image: postgres:15.2-alpine
     environment:
-      - 'POSTGRES_USER=admin'
-      - 'POSTGRES_PASSWORD=admin'
+      - 'POSTGRES_USER=root'
+      - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_DB=main'
     ports:
       - '5432:5432'
     volumes:
-      - 'db:/var/lib/postgresql/data'
+      - 'db_data:/var/lib/postgresql/data'
     healthcheck:
-      test: 'pg_isready'
+      test: 'pg_isready -U root -d main'
       interval: 5s
       timeout: 5s
       retries: 3
@@ -23,7 +23,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
+      DB_URI: 'postgresql+psycopg2://root:root@db:5432/main'
       MAX_ITEM_COUNT: '500'
   app:
     container_name: docker_scraper_app
@@ -32,10 +32,10 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
+      DB_URI: 'postgresql+psycopg2://root:root@db:5432/main'
       SERVER_NAME: '0.0.0.0:8080'
     ports:
       - '8080:8080'
 volumes:
-  db:
+  db_data:
     driver: local
