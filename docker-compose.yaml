@@ -11,11 +11,17 @@ services:
       - '5432:5432'
     volumes:
       - 'db:/var/lib/postgresql/data'
+    healthcheck:
+      test: 'pg_isready'
+      interval: 5s
+      timeout: 5s
+      retries: 3
   scraper:
     container_name: docker_scraper_scraper
     build: ./scraper
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
       MAX_ITEM_COUNT: '500'
@@ -23,7 +29,8 @@ services:
     container_name: docker_scraper_app
     build: ./app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
       SERVER_NAME: '0.0.0.0:8080'
