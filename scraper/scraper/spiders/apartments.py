@@ -2,6 +2,7 @@ import scrapy
 
 from scraper.items import ApartmentItem
 
+# TODO move elsewhere ?
 APARTMENTS_LIMIT = 10
 
 

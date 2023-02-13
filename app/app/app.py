@@ -5,6 +5,7 @@ from sqlalchemy import Integer, String
 app = Flask(__name__)
 # TODO move elsewhere ?
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://admin:admin@localhost:5432/main'
+app.config['SERVERNAME'] = '0.0.0.0:8080'
 
 db = SQLAlchemy(app)
 
@@ -30,4 +31,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run()
