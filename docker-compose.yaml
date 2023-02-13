@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  db:
+    container_name: docker_scraper_db
+    image: postgres:15.2-alpine
+    environment:
+      - 'POSTGRES_USER=admin'
+      - 'POSTGRES_PASSWORD=admin'
+      - 'POSTGRES_DB=main'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'db:/var/lib/postgresql/data'
+  scraper:
+    container_name: docker_scraper_scraper
+    build: ./scraper
+    depends_on:
+      - db
+    environment:
+      DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
+      MAX_ITEM_COUNT: '500'
+  app:
+    container_name: docker_scraper_app
+    build: ./app
+    depends_on:
+      - db
+    environment:
+      DB_URI: 'postgresql+psycopg2://admin:admin@db:5432/main'
+      SERVER_NAME: '0.0.0.0:8080'
+    ports:
+      - '8080:8080'
+volumes:
+  db:
+    driver: local

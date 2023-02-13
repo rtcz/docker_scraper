@@ -1,11 +1,12 @@
+import os
+
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, BigInteger
 
 app = Flask(__name__)
-# TODO move elsewhere ?
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://admin:admin@localhost:5432/main'
-app.config['SERVERNAME'] = '0.0.0.0:8080'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI')
+app.config['SERVER_NAME'] = os.environ.get('SERVER_NAME')
 
 db = SQLAlchemy(app)
 
@@ -16,7 +17,7 @@ class Apartment(db.Model):
     id = db.Column(Integer, primary_key=True)
     title = db.Column(String(255), nullable=False)
     locality = db.Column(String(255))
-    price = db.Column(Integer)
+    price = db.Column(BigInteger)
     image_url = db.Column(String(255))
 
 

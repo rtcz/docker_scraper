@@ -1,20 +1,20 @@
+import os
+
 import scrapy
 
 from scraper.items import ApartmentItem
-
-# TODO move elsewhere ?
-APARTMENTS_LIMIT = 10
 
 
 class ApartmentsSpider(scrapy.Spider):
     name = "apartments"
     allowed_domains = ["sreality.cz"]
+    max_item_count = os.environ.get('MAX_ITEM_COUNT', 10)
     start_urls = [
         f"https://www.sreality.cz/api/en/v2/estates?"
         f"category_main_cb=1&"
         f"category_type_cb=1&"
         f"page=2&"
-        f"per_page={APARTMENTS_LIMIT}"
+        f"per_page={max_item_count}"
     ]
 
     # noinspection PyMethodOverriding

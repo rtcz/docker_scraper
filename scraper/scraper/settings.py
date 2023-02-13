@@ -92,5 +92,3 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-# TODO move elsewhere ?
-SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://admin:admin@localhost:5432/main"
